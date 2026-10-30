@@ -3,7 +3,7 @@ import { CONTENT_PAGES } from "../types";
 import { useStore } from "../store";
 
 export function Layout() {
-  const { currentUser, logout, resetDemo } = useStore();
+  const { currentUser, logout } = useStore();
   const navigate = useNavigate();
 
   return (
@@ -38,9 +38,6 @@ export function Layout() {
               }}
             >
               Sign out
-            </button>
-            <button className="btn ghost small" onClick={() => void resetDemo()}>
-              Reset demo
             </button>
           </div>
         </div>

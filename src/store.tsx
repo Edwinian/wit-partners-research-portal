@@ -42,7 +42,6 @@ type Store = {
   threads: Thread[];
   login: (email: string, password: string) => string | null;
   logout: () => void;
-  resetDemo: () => Promise<void>;
   createResearch: (contentType: ContentType, draft: ResearchDraft) => string | null;
   updateResearch: (id: string, draft: ResearchDraft) => string | null;
   deleteResearch: (id: string) => void;
@@ -92,7 +91,6 @@ function blankToNull(value: string) {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [seed, setSeed] = useState<DemoState | null>(null);
   const [state, setState] = useState<DemoState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -102,7 +100,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     loadSeed()
       .then((loaded) => {
         if (cancelled) return;
-        setSeed(loaded);
         const local = readLocal();
         setState(local ?? loaded);
         const sessionId = sessionStorage.getItem(SESSION_KEY);
@@ -150,13 +147,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       logout: () => {
         setCurrentUser(null);
         sessionStorage.removeItem(SESSION_KEY);
-      },
-      resetDemo: async () => {
-        const fresh = seed ?? (await loadSeed());
-        setSeed(fresh);
-        persist(fresh);
-        const sessionId = sessionStorage.getItem(SESSION_KEY);
-        setCurrentUser(fresh.users.find((u) => u.id === sessionId) ?? null);
       },
       createResearch: (contentType, draft) => {
         if (!state) return "Demo data is still loading.";
@@ -311,7 +301,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         });
       },
     };
-  }, [currentUser, error, seed, state]);
+  }, [currentUser, error, state]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }
