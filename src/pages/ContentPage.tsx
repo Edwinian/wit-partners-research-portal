@@ -30,7 +30,6 @@ export function ContentPage({ title, contentType }: { title: string; contentType
       <div className="page-head">
         <div>
           <h1>{title}</h1>
-          <p>Credibility 1 is flagged red. Heart like adds 1, unlike subtracts 1, staying in 1–10.</p>
         </div>
         <button
           className="btn gold"
