@@ -1,0 +1,11 @@
+[
+  {
+    "id": "u-im-1",
+    "email": "im@witpartners.com",
+    "password": "witdemo",
+    "display_name": "Alex Ng",
+    "role": "investment_manager",
+    "credibility_threshold": 1,
+    "likes": ["r-an-1", "r-fl-1"]
+  }
+]

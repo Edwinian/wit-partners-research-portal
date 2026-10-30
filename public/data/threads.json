@@ -1,0 +1,28 @@
+[
+  {
+    "id": "th-1",
+    "title": "Duration vs credit in Q4",
+    "createdAt": "2026-10-28T09:12:00Z",
+    "messages": [
+      {
+        "id": "m-1",
+        "role": "user",
+        "content": "What are the latest letters saying about adding duration versus moving up in credit quality?",
+        "createdAt": "2026-10-28T09:12:00Z"
+      }
+    ]
+  },
+  {
+    "id": "th-2",
+    "title": "HK property liquidity",
+    "createdAt": "2026-10-27T14:03:00Z",
+    "messages": [
+      {
+        "id": "m-2",
+        "role": "user",
+        "content": "Summarise the last two analyst notes on Hong Kong property liquidity.",
+        "createdAt": "2026-10-27T14:03:00Z"
+      }
+    ]
+  }
+]
