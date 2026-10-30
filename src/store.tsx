@@ -7,6 +7,9 @@ import {
   type ReactNode,
 } from "react";
 import {
+  CREDIBILITY_MAX,
+  CREDIBILITY_MIN,
+  CREDIBILITY_THRESHOLD_MIN,
   MARKET_OVERVIEW_CREDIBILITY_THRESHOLD,
   type ContentType,
   type DemoState,
@@ -93,7 +96,18 @@ function blankToNull(value: string) {
 }
 
 function clampScore(value: number) {
-  return Math.min(10, Math.max(1, Math.round(value)));
+  return Math.min(CREDIBILITY_MAX, Math.max(CREDIBILITY_MIN, Math.round(value)));
+}
+
+function clampThreshold(value: number) {
+  return Math.min(CREDIBILITY_MAX, Math.max(CREDIBILITY_THRESHOLD_MIN, Math.round(value)));
+}
+
+function normalizeUsers(users: User[]) {
+  return users.map((user) => ({
+    ...user,
+    credibility_threshold: clampThreshold(user.credibility_threshold ?? CREDIBILITY_THRESHOLD_MIN),
+  }));
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
@@ -108,15 +122,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (cancelled) return;
         const local = readLocal();
         const next = local ?? loaded;
+        const users = normalizeUsers(next.users);
         setState({
           ...next,
+          users,
           overviews: next.overviews.map((overview) => ({
             ...overview,
             credibility: MARKET_OVERVIEW_CREDIBILITY_THRESHOLD,
           })),
         });
         const sessionId = sessionStorage.getItem(SESSION_KEY);
-        const users = (local ?? loaded).users;
         setCurrentUser(users.find((u) => u.id === sessionId) ?? null);
       })
       .catch(() => {
@@ -319,7 +334,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ...state,
           users: state.users.map((u) =>
             u.id === user.id
-              ? { ...u, credibility_threshold: clampScore(value) }
+              ? { ...u, credibility_threshold: clampThreshold(value) }
               : u,
           ),
         });

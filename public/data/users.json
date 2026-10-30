@@ -5,7 +5,7 @@
     "password": "witdemo",
     "display_name": "Alex Ng",
     "role": "investment_manager",
-    "credibility_threshold": 1,
+    "credibility_threshold": 2,
     "likes": ["r-an-1", "r-fl-1"]
   }
 ]

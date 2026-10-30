@@ -35,6 +35,9 @@ export interface Research {
   deletedAt: string | null;
 }
 
+export const CREDIBILITY_MIN = 1;
+export const CREDIBILITY_MAX = 10;
+export const CREDIBILITY_THRESHOLD_MIN = 2;
 export const MARKET_OVERVIEW_CREDIBILITY_THRESHOLD = 1;
 
 export interface MarketOverview {
