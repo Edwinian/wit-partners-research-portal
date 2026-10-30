@@ -13,18 +13,13 @@ function formatWhen(value?: string | null) {
 }
 
 export function Home() {
-  const { overview, currentUser } = useStore();
+  const { overview } = useStore();
 
   return (
     <section>
       <div className="page-head">
         <div>
           <h1>Home</h1>
-          <p>
-            Welcome back, {currentUser?.display_name}. Market Overview is firm-wide and always
-            generated at credibility {MARKET_OVERVIEW_CREDIBILITY_THRESHOLD} so every manager sees
-            the same digest.
-          </p>
         </div>
       </div>
       <article className="overview">
