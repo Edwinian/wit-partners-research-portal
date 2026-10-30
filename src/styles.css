@@ -223,7 +223,7 @@ tr.flagged td { background: var(--flag); color: var(--flag-ink); }
 .assistant {
   display: grid;
   grid-template-columns: 260px 1fr;
-  min-height: calc(100vh - 56px);
+  min-height: 0;
   border: 1px solid var(--line);
   background: var(--panel);
 }
@@ -261,7 +261,8 @@ tr.flagged td { background: var(--flag); color: var(--flag-ink); }
   align-items: center;
 }
 .messages {
-  flex: 1;
+  flex: none;
+  height: 220px;
   overflow: auto;
   padding: 16px;
   display: flex;
@@ -274,8 +275,10 @@ tr.flagged td { background: var(--flag); color: var(--flag-ink); }
   padding: 10px 12px;
   line-height: 1.45;
   white-space: pre-wrap;
+  align-self: flex-start;
+  height: fit-content;
 }
-.bubble.user { margin-left: auto; background: var(--navy-2); color: #fff; }
+.bubble.user { align-self: flex-end; background: var(--navy-2); color: #fff; }
 .bubble.assistant { background: #fff; border: 1px solid var(--line); }
 .composer {
   border-top: 1px solid var(--line);
