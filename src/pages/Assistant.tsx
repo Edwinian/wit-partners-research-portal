@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { RangeSlider } from "../components/RangeSlider";
+import { CredibilityThresholdField } from "../components/CredibilityThresholdField";
 import { useStore } from "../store";
 
 export function Assistant() {
   const { threads, createThread, deleteThread, sendMessage } = useStore();
   const [activeId, setActiveId] = useState<string | null>(threads[0]?.id ?? null);
   const [query, setQuery] = useState("");
-  const [threshold, setThreshold] = useState(1);
 
   useEffect(() => {
     if (!activeId && threads[0]) setActiveId(threads[0].id);
@@ -32,7 +31,7 @@ export function Assistant() {
       <div className="page-head">
         <div>
           <h1>Assistant</h1>
-          <p>Chat window with a credibility threshold slider. This demo mocks the agent reply; it does not stream.</p>
+          <p>Chat window with a credibility threshold stored on the user. This demo mocks the agent reply; it does not stream.</p>
         </div>
       </div>
       <div className="assistant">
@@ -86,10 +85,7 @@ export function Assistant() {
             ) : null}
           </div>
           <div className="composer">
-            <label className="field" style={{ marginBottom: 0 }}>
-              <span>Credibility Threshold</span>
-              <RangeSlider value={threshold} onChange={setThreshold} />
-            </label>
+            <CredibilityThresholdField className="threshold-field" />
             <form onSubmit={submit}>
               <input
                 type="text"

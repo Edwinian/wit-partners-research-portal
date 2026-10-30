@@ -149,6 +149,16 @@ a { color: inherit; text-decoration: none; }
 }
 .page-head h1 { margin: 0; font-size: 28px; color: var(--navy); }
 .page-head p { margin: 6px 0 0; color: var(--muted); }
+.page-head-tools {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.threshold-field {
+  margin-bottom: 0;
+  min-width: min(360px, 70vw);
+}
 
 .overview {
   background: var(--panel);

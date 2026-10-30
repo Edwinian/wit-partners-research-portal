@@ -6,15 +6,16 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type {
-  ContentType,
-  DemoState,
-  MarketOverview,
-  Message,
-  Publicity,
-  Research,
-  Thread,
-  User,
+import {
+  MARKET_OVERVIEW_CREDIBILITY_THRESHOLD,
+  type ContentType,
+  type DemoState,
+  type MarketOverview,
+  type Message,
+  type Publicity,
+  type Research,
+  type Thread,
+  type User,
 } from "./types";
 
 const LS_KEY = "wit-rp-demo-v1";
@@ -49,6 +50,7 @@ type Store = {
   createThread: () => string;
   deleteThread: (id: string) => void;
   sendMessage: (threadId: string, content: string) => void;
+  setCredibilityThreshold: (value: number) => void;
 };
 
 const StoreContext = createContext<Store | null>(null);
@@ -90,6 +92,10 @@ function blankToNull(value: string) {
   return trimmed ? trimmed : null;
 }
 
+function clampScore(value: number) {
+  return Math.min(10, Math.max(1, Math.round(value)));
+}
+
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<DemoState | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -101,7 +107,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       .then((loaded) => {
         if (cancelled) return;
         const local = readLocal();
-        setState(local ?? loaded);
+        const next = local ?? loaded;
+        setState({
+          ...next,
+          overviews: next.overviews.map((overview) => ({
+            ...overview,
+            credibility: MARKET_OVERVIEW_CREDIBILITY_THRESHOLD,
+          })),
+        });
         const sessionId = sessionStorage.getItem(SESSION_KEY);
         const users = (local ?? loaded).users;
         setCurrentUser(users.find((u) => u.id === sessionId) ?? null);
@@ -169,7 +182,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           geography: blankToNull(draft.geography),
           time_horizon: blankToNull(draft.time_horizon),
           confidence: null,
-          credibility: Math.min(10, Math.max(1, Math.round(draft.credibility))),
+          credibility: clampScore(draft.credibility),
           contentType,
           publicity: draft.publicity,
           attachment: blankToNull(draft.attachment),
@@ -205,7 +218,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
                   asset_class: blankToNull(draft.asset_class),
                   geography: blankToNull(draft.geography),
                   time_horizon: blankToNull(draft.time_horizon),
-                  credibility: Math.min(10, Math.max(1, Math.round(draft.credibility))),
+                  credibility: clampScore(draft.credibility),
                   publicity: draft.publicity,
                   attachment: blankToNull(draft.attachment),
                   summary: blankToNull(draft.summary),
@@ -249,7 +262,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             const next = liked ? r.credibility - 1 : r.credibility + 1;
             return {
               ...r,
-              credibility: Math.min(10, Math.max(1, next)),
+              credibility: clampScore(next),
               updatedAt: nowIso(),
             };
           }),
@@ -298,6 +311,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
                 : t.title;
             return { ...t, title, messages: [...t.messages, userMsg, botMsg] };
           }),
+        });
+      },
+      setCredibilityThreshold: (value: number) => {
+        if (!state || !user) return;
+        persist({
+          ...state,
+          users: state.users.map((u) =>
+            u.id === user.id
+              ? { ...u, credibility_threshold: clampScore(value) }
+              : u,
+          ),
         });
       },
     };

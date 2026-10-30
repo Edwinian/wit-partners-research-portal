@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CredibilityThresholdField } from "../components/CredibilityThresholdField";
 import { useStore } from "../store";
 import { ResearchForm, type ResearchDraft } from "../components/ResearchForm";
 import type { ContentType, Research } from "../types";
@@ -17,6 +18,7 @@ export function ContentPage({ title, contentType }: { title: string; contentType
   const [mode, setMode] = useState<"create" | "edit" | null>(null);
   const [editing, setEditing] = useState<Research | null>(null);
   const rows = researches.filter((r) => r.contentType === contentType);
+  const threshold = currentUser?.credibility_threshold ?? 1;
 
   const liked = (id: string) => currentUser?.likes.includes(id) ?? false;
 
@@ -31,15 +33,18 @@ export function ContentPage({ title, contentType }: { title: string; contentType
         <div>
           <h1>{title}</h1>
         </div>
-        <button
-          className="btn gold"
-          onClick={() => {
-            setEditing(null);
-            setMode("create");
-          }}
-        >
-          Create
-        </button>
+        <div className="page-head-tools">
+          <CredibilityThresholdField className="threshold-field" />
+          <button
+            className="btn gold"
+            onClick={() => {
+              setEditing(null);
+              setMode("create");
+            }}
+          >
+            Create
+          </button>
+        </div>
       </div>
       <div className="table-wrap">
         <table>
@@ -60,7 +65,7 @@ export function ContentPage({ title, contentType }: { title: string; contentType
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} className={row.credibility === 1 ? "flagged" : undefined}>
+              <tr key={row.id} className={row.credibility <= threshold ? "flagged" : undefined}>
                 <td>
                   <button
                     className={`heart${liked(row.id) ? " liked" : ""}`}

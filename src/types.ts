@@ -35,9 +35,12 @@ export interface Research {
   deletedAt: string | null;
 }
 
+export const MARKET_OVERVIEW_CREDIBILITY_THRESHOLD = 1;
+
 export interface MarketOverview {
   id: string;
   content: string;
+  credibility: number;
   latestResearchAt: string;
   createdAt: string;
 }
