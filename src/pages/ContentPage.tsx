@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CredibilityThresholdField } from "../components/CredibilityThresholdField";
 import { useStore } from "../store";
 import { ResearchForm, type ResearchDraft } from "../components/ResearchForm";
 import { CREDIBILITY_THRESHOLD_MIN, type ContentType, type Research } from "../types";
@@ -33,18 +32,15 @@ export function ContentPage({ title, contentType }: { title: string; contentType
         <div>
           <h1>{title}</h1>
         </div>
-        <div className="page-head-tools">
-          <CredibilityThresholdField className="threshold-field" />
-          <button
-            className="btn gold"
-            onClick={() => {
-              setEditing(null);
-              setMode("create");
-            }}
-          >
-            Create
-          </button>
-        </div>
+        <button
+          className="btn gold"
+          onClick={() => {
+            setEditing(null);
+            setMode("create");
+          }}
+        >
+          Create
+        </button>
       </div>
       <div className="table-wrap">
         <table>
