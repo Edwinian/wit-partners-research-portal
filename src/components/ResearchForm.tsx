@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import type { Publicity, Research } from "../types";
+import { RangeSlider } from "./RangeSlider";
 
 export type ResearchDraft = {
   title: string;
@@ -94,17 +95,10 @@ export function ResearchForm({
         </div>
         <label className="field">
           <span>Credibility ({draft.credibility})</span>
-          <div className="range-row">
-            <span>1</span>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              value={draft.credibility}
-              onChange={(e) => set("credibility", Number(e.target.value))}
-            />
-            <span>10</span>
-          </div>
+          <RangeSlider
+            value={draft.credibility}
+            onChange={(value) => set("credibility", value)}
+          />
         </label>
         <label className="field">
           <span>Publicity</span>

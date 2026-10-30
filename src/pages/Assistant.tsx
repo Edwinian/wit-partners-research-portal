@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { RangeSlider } from "../components/RangeSlider";
 import { useStore } from "../store";
 
 export function Assistant() {
@@ -87,17 +88,7 @@ export function Assistant() {
           <div className="composer">
             <label className="field" style={{ marginBottom: 0 }}>
               <span>Credibility Threshold</span>
-              <div className="range-row">
-                <span>1</span>
-                <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  value={threshold}
-                  onChange={(e) => setThreshold(Number(e.target.value))}
-                />
-                <span>10</span>
-              </div>
+              <RangeSlider value={threshold} onChange={setThreshold} />
             </label>
             <form onSubmit={submit}>
               <input
