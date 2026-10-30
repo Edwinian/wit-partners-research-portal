@@ -86,7 +86,7 @@ export function Assistant() {
           </div>
           <div className="composer">
             <label className="field" style={{ marginBottom: 0 }}>
-              <span>Credibility threshold ({threshold}) — drop retrieved chunks at or below this score</span>
+              <span>Credibility Threshold</span>
               <div className="range-row">
                 <span>1</span>
                 <input
